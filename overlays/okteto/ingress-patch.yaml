@@ -1,0 +1,10 @@
+- op: remove
+  path: "/spec/tls"
+
+- op: remove
+  path: "/spec/rules/0/host"
+  
+- op: add
+  path: "/metadata/annotations"
+  value:
+    dev.okteto.com/generate-host: true

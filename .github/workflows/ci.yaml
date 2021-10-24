@@ -1,0 +1,20 @@
+name: CI
+on:
+  push:
+    branches:
+      - master
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: hexdump95/kubectl:1.22.2
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy to Okteto
+        env:
+          OKTETO_CONFIG: ${{ secrets.OKTETO_CONFIG }}
+        run: |
+          mkdir $HOME/.kube/
+          echo "$OKTETO_CONFIG" > $HOME/.kube/config
+          kubectl apply -k overlays/okteto
+          rm -rf $HOME/.kube/
