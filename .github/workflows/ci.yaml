@@ -4,17 +4,23 @@ on:
     branches:
       - master
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     container: hexdump95/kubectl:1.22.2
     steps:
       - uses: actions/checkout@v2
 
-      - name: Deploy to Okteto
+      - name: Set Okteto context
         env:
-          OKTETO_CONFIG: ${{ secrets.OKTETO_CONFIG }}
+          OKTETO_CERT: ${{ secrets.OKTETO_CERT }}
         run: |
-          mkdir $HOME/.kube/
-          echo "$OKTETO_CONFIG" > $HOME/.kube/config
-          kubectl apply -k overlays/okteto
-          rm -rf $HOME/.kube/
+          echo "$OKTETO_CERT" > ca.crt
+          kubectl config set-cluster ${{ secrets.OKTETO_CLUSTER }} --embed-certs --certificate-authority=ca.crt --server=${{ secrets.OKTETO_SERVER }}
+          kubectl config set-credentials ${{ secrets.OKTETO_USER }} --token=${{ secrets.OKTETO_TOKEN }}
+          kubectl config set-context ${{ secrets.OKTETO_CLUSTER }} --cluster=${{ secrets.OKTETO_CLUSTER }} --user=${{ secrets.OKTETO_USER }} --namespace=${{ secrets.OKTETO_NAMESPACE }}
+          kubectl config use-context ${{ secrets.OKTETO_CLUSTER }}
+
+      - name: Deploy to Okteto
+        run: kubectl apply -k overlays/okteto
+
+      - run: rm ca.crt && rm -rf $HOME/.kube/
