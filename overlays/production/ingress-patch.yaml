@@ -1,0 +1,10 @@
+- op: add
+  path: "/metadata/annotations"
+  value:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "false"
+    cert-manager.io/issuer: "letsencrypt-prod"
+    kubernetes.io/ingress.global-static-ip-name: "frontend-ip"
+    cert-manager.io/issue-temporary-certificate: "true"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    certmanager.k8s.io/acme-challenge-type: "dns01"

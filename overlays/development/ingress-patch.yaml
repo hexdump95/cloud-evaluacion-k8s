@@ -1,4 +1,4 @@
 - op: add
   path: "/metadata/annotations"
   value:
-    cert-manager.io/issuer: issuer
+    cert-manager.io/issuer: "issuer"

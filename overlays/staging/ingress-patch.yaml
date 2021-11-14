@@ -1,0 +1,25 @@
+- op: replace
+  path: "/spec/rules/0/host"
+  value: k8s.sergiovillanueva.ar
+
+- op: replace
+  path: "/spec/tls/0/hosts/0"
+  value: k8s.sergiovillanueva.ar
+
+- op: replace
+  path: "/spec/rules/0/http/paths/0/path"
+  value: /*
+
+- op: replace
+  path: "/spec/rules/0/http/paths/0/pathType"
+  value: ImplementationSpecific
+
+- op: add
+  path: "/metadata/annotations"
+  value:
+    kubernetes.io/ingress.class: "gce"
+    cert-manager.io/issuer: "letsencrypt-staging"
+    kubernetes.io/ingress.global-static-ip-name: "frontend-ip"
+    cert-manager.io/issue-temporary-certificate: "true"
+    acme.cert-manager.io/http01-edit-in-place: "true"
+    certmanager.k8s.io/acme-challenge-type: "dns01"
