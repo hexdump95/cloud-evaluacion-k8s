@@ -6,7 +6,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    container: hexdump95/kubectl:1.22.2
+    container: bitnami/kubectl:1.22
     steps:
       - uses: actions/checkout@v2
 
